@@ -24,7 +24,6 @@ const userSchema = mongoose.Schema({
   password: {
     type: String,
     required: [true, "Password is required"],
-    unique: [true, "This password is already in use."],
     validate: {
       validator: function (pass) {
         return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-_/@#$%^&*!])[a-zA-Z\d-_/@#$%^&*!]{8,20}$/.test(
@@ -32,7 +31,7 @@ const userSchema = mongoose.Schema({
         );
       },
     },
-    message: () =>
+    message:
       "Password must be 8-20 characters and contain a mix of lowercase, uppercase, numbers, and special characters (-_/!@#$%^&*).",
   },
 
@@ -51,6 +50,10 @@ userSchema.pre("save", async function (next) {
   this.password = hashPass;
   next();
 });
+
+userSchema.methods.comparePassword = async function (password) {
+  return await bcryptjs.compare(password, this.password);
+};
 
 const userModel = mongoose.model("User", userSchema);
 module.exports = userModel;

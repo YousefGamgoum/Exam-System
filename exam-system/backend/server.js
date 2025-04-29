@@ -1,15 +1,19 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
 const AppError = require("./utils/AppError");
 
 dotenv.config();
 const app = express();
+app.use(cors());
 app.use(express.json());
 
+mongoose.set("strictQuery", true);
+
 mongoose
-  .connect("mongodb://127.0.0.1:27017/ecommerce-project")
+  .connect("mongodb://127.0.0.1:27017/exam-system")
   .then(() => {
     console.log("connect to mongodb");
   })

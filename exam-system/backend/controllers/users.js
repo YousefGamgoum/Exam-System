@@ -10,7 +10,6 @@ exports.register = catchAsync(async (req, res) => {
   res.status(200).json({
     status: "success",
     message: "Registration successfuly",
-    data: user,
   });
 });
 
@@ -55,6 +54,5 @@ exports.login = catchAsync(async (req, res) => {
   res.status(200).json({
     status: "success",
     token,
-    data: user,
   });
 });

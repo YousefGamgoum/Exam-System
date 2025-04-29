@@ -6,10 +6,12 @@ const { catchAsync } = require("../utils/catchAsync");
 exports.auth = catchAsync(function (req, res, next) {
   const { authorization } = req.headers;
 
-  if (!authorization) return next(new AppError(401, "Please login first"));
+  if (!authorization || !authorization.startsWith("Bearer "))
+    return next(new AppError(401, "Please login first"));
 
   //   Token verification
-  let decoded = jwt.verify(authorization, process.env.SECRET);
+  const token = authorization.split(" ")[1];
+  let decoded = jwt.verify(token, process.env.SECRET);
   console.log(decoded);
 
   req.id = decoded.id;
