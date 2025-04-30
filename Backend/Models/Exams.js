@@ -1,62 +1,72 @@
 const mongoose = require("mongoose");
 
-const examSchema = new mongoose.Schema({
+const examSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: [true, "Exam name is required"]
+      type: String,
+      required: [true, "Exam name is required"],
     },
     description: {
-        type: String,
-        required: [true, "Exam description is required"]
+      type: String,
+      required: [true, "Exam description is required"],
     },
-    questions: [{
+    questions: [
+      {
         questionText: {
-            type: String,
-            required: [true, "Question text is required"]
+          type: String,
+          required: [true, "Question text is required"],
         },
         choices: {
-            type: [{
-                text: {
-                    type: String,
-                    required: function() {
-                        return this.choices.indexOf(this) < 2; // First 2 choices are required
-                    }
-                },
-                isCorrect: {
-                    type: Boolean,
-                    default: false
-                }
-            }],
-            validate: [
-                {
-                    validator: function(choices) {
-                        return choices.length <= 4; // Maximum 4 choices allowed
-                    },
-                    message: "Maximum 4 choices allowed per question"
-                },
-                {
-                    validator: function(choices) {
-                        return choices.filter(choice => choice.isCorrect).length === 1;
-                    },
-                    message: "Question must have exactly one correct answer"
-                }
-            ],
-            required: [true, "Question choices are required"]
+          type: [
+            {
+              text: {
+                type: String,
+                required: true,
+              },
+              isCorrect: {
+                type: Boolean,
+                default: false,
+              },
+            },
+          ],
+          validate: [
+            {
+              validator: function (choices) {
+                return choices.length >= 2 && choices.length <= 4;
+              },
+              message: "Questions must have between 2 and 4 choices",
+            },
+            {
+              validator: function (choices) {
+                return (
+                  choices.filter((choice) => choice.isCorrect).length === 1
+                );
+              },
+              message: "Question must have exactly one correct answer",
+            },
+          ],
+          required: [true, "Question choices are required"],
         },
         marks: {
-            type: Number,
-            required: [true, "Question marks are required"]
-        }
-    }],
+          type: Number,
+          required: [true, "Question marks are required"],
+          min: [1, "Question marks cannot be negative"],
+        },
+      },
+    ],
     totalMarks: {
-        type: Number,
-        required: [true, "Exam total marks are required"]
+      type: Number,
     },
-}, { timestamps: true });
+  },
+  { timestamps: true }
+);
 
-examSchema.pre("save", function(next) {
-    this.totalMarks = this.questions.reduce((total, question) => total + question.marks, 0);
-    next();
+examSchema.pre("save", function (next) {
+  this.totalMarks = this.questions.reduce(
+    (total, question) => total + question.marks,
+    0
+  );
+  next();
 });
 
 const Exam = mongoose.model("Exam", examSchema);

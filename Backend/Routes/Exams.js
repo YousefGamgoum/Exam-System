@@ -11,12 +11,12 @@ const { userRoleDetect } = require("../Middlewares/auth");
 const router = require("express").Router();
 
 router.get("/", getAllExams);
-router.get("/:id", getExamById);
+router.get("/students-results", getStudentsResults);
+router.post("/create", createExam);
 
-router.use(userRoleDetect("admin"));
+// router.use(userRoleDetect("admin"));
+router.get("/:id", getExamById);
 router.put("/:id", updateExamById);
 router.delete("/:id", deleteExamById);
-router.post("/create", createExam);
-router.get("/students-results", getStudentsResults);
 
 module.exports = router;

@@ -3,7 +3,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const examsRoutes = require("./Routes/Exams");
-const port = 3000;
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 //Database Connection
 mongoose
@@ -11,7 +13,6 @@ mongoose
   .then(() => {
     console.log("Database Connected");
     // Start Listening
-    app.listen(port, () => {});
   })
   .catch((err) => {});
 
@@ -80,3 +81,6 @@ app.use((err, req, res, next) => {
     message,
   });
 });
+
+const port = 3000;
+app.listen(port, () => {});
