@@ -1,3 +1,13 @@
+const {
+  getAllExams,
+  getExamById,
+  updateExamById,
+  deleteExamById,
+  createExam,
+  getStudentsResults,
+} = require("../Controllers/Exams");
+
+const { userRoleDetect } = require("../Middlewares/auth");
 const router = require("express").Router();
 
 router.get("/", getAllExams);

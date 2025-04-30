@@ -2,9 +2,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const productsRoutes = require("./Routes/Products");
-const userRoutes = require("./Routes/User");
-
+const examsRoutes = require("./Routes/Exams");
 const port = 3000;
 
 //Database Connection
@@ -26,9 +24,9 @@ app.use(express.json());
 app.use(express.static("./Static"));
 
 // Routes
-app.use("/users", userRoutes);
+// app.use("/users", userRoutes);
 
-app.use("/exams", productsRoutes);
+app.use("/exams", examsRoutes);
 
 // NotFound Middleware
 app.use(function (req, res, next) {
