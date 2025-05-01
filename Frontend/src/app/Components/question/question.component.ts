@@ -1,4 +1,12 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -14,8 +22,10 @@ import {
   templateUrl: './question.component.html',
   styleUrl: './question.component.css',
 })
-export class QuestionComponent implements OnInit {
-  @Output() questionAdded = new EventEmitter<any>();
+export class QuestionComponent implements OnInit, OnChanges {
+  @Input() questionData: any;
+  @Input() questionIndex: number = 0;
+  @Output() questionAdded = new EventEmitter<{ data: any; index: number }>();
   questionForm: FormGroup;
   mcqOptions = [0, 1, 2, 3];
 
@@ -48,16 +58,28 @@ export class QuestionComponent implements OnInit {
             (option) => formValue[option] && formValue[option].trim() !== ''
           );
           if (hasAllOptions && formValue.correctAnswer !== '') {
-            this.questionAdded.emit(formValue);
+            this.questionAdded.emit({
+              data: formValue,
+              index: this.questionIndex,
+            });
           }
         } else if (
           formValue.questionType === 'trueFalse' &&
           formValue.correctAnswer !== ''
         ) {
-          this.questionAdded.emit(formValue);
+          this.questionAdded.emit({
+            data: formValue,
+            index: this.questionIndex,
+          });
         }
       }
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['questionData'] && changes['questionData'].currentValue) {
+      this.questionForm.patchValue(this.questionData);
+    }
   }
 
   onQuestionTypeChange(): void {
@@ -78,5 +100,12 @@ export class QuestionComponent implements OnInit {
         this.questionForm.get(option)?.setValue('');
       });
     }
+  }
+
+  onQuestionChange(): void {
+    this.questionAdded.emit({
+      data: this.questionForm.value,
+      index: this.questionIndex,
+    });
   }
 }

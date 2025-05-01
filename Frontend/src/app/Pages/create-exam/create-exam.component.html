@@ -34,15 +34,17 @@
             </div>
         </div>
 
-        <div *ngFor="let questionIndex of questions" class="question-container mb-4">
+        <div *ngFor="let questionIndex of questions; let i = index" class="question-container mb-4">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Question {{questionIndex + 1}}</h5>
-                    <button type="button" class="btn btn-danger btn-sm" (click)="deleteQuestion(questionIndex)">Delete
+                    <h5 class="mb-0">Question {{i + 1}}</h5>
+                    <button type="button" class="btn btn-danger btn-sm" (click)="deleteQuestion(i)">Delete
                         Question</button>
                 </div>
                 <div class="card-body">
-                    <app-question (questionAdded)="onQuestionAdded($event)"></app-question>
+                    <app-question [questionData]="examQuestions[i]" [questionIndex]="i"
+                        (questionAdded)="onQuestionAdded($event.data, $event.index)">
+                    </app-question>
                 </div>
             </div>
         </div>

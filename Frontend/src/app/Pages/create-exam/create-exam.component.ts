@@ -40,6 +40,17 @@ export class CreateExamComponent implements OnInit {
   addQuestion(): void {
     const newIndex = this.questions.length;
     this.questions.push(newIndex);
+    // Initialize new question with default values
+    this.examQuestions[newIndex] = {
+      title: '',
+      mark: '',
+      questionType: '',
+      correctAnswer: '',
+      option0: '',
+      option1: '',
+      option2: '',
+      option3: '',
+    };
   }
 
   deleteQuestion(index: number): void {
@@ -49,32 +60,76 @@ export class CreateExamComponent implements OnInit {
     this.questions = this.questions.map((_, i) => i);
   }
 
-  onQuestionAdded(questionData: any): void {
-    const questionIndex = this.questions.length - 1;
-    this.examQuestions[questionIndex] = questionData;
+  onQuestionAdded(questionData: any, index: number): void {
+    // Update the specific question at the given index
+    this.examQuestions[index] = questionData;
   }
 
   formatQuestionData(question: any) {
     if (!question) return null;
 
+    // Validate required fields
+    if (
+      !question.title ||
+      !question.mark ||
+      !question.questionType ||
+      !question.correctAnswer
+    ) {
+      console.error('Missing required fields:', question);
+      return null;
+    }
+
     if (question.questionType === 'mcq') {
+      const correctAnswer = Number(question.correctAnswer);
+      if (isNaN(correctAnswer) || correctAnswer < 0 || correctAnswer > 3) {
+        console.error(
+          'Invalid correct answer for MCQ:',
+          question.correctAnswer
+        );
+        return null;
+      }
+
+      // Validate all MCQ options are present
+      if (
+        !question.option0 ||
+        !question.option1 ||
+        !question.option2 ||
+        !question.option3
+      ) {
+        console.error('Missing MCQ options:', question);
+        return null;
+      }
+
       return {
         questionText: question.title,
-        marks: question.mark,
+        marks: Number(question.mark),
         choices: [
-          { text: question.option0, isCorrect: question.correctAnswer === 0 },
-          { text: question.option1, isCorrect: question.correctAnswer === 1 },
-          { text: question.option2, isCorrect: question.correctAnswer === 2 },
-          { text: question.option3, isCorrect: question.correctAnswer === 3 },
+          { text: question.option0, isCorrect: correctAnswer === 0 },
+          { text: question.option1, isCorrect: correctAnswer === 1 },
+          { text: question.option2, isCorrect: correctAnswer === 2 },
+          { text: question.option3, isCorrect: correctAnswer === 3 },
         ],
       };
     } else {
+      // True/False validation
+      if (
+        question.correctAnswer !== 'true' &&
+        question.correctAnswer !== 'false'
+      ) {
+        console.error(
+          'Invalid correct answer for True/False:',
+          question.correctAnswer
+        );
+        return null;
+      }
+
+      const isTrueCorrect = question.correctAnswer === 'true';
       return {
         questionText: question.title,
-        marks: question.mark,
+        marks: Number(question.mark),
         choices: [
-          { text: 'True', isCorrect: question.correctAnswer === 'true' },
-          { text: 'False', isCorrect: question.correctAnswer === 'false' },
+          { text: 'True', isCorrect: isTrueCorrect },
+          { text: 'False', isCorrect: !isTrueCorrect },
         ],
       };
     }
@@ -82,12 +137,32 @@ export class CreateExamComponent implements OnInit {
 
   onSubmit(): void {
     if (this.examForm.valid && this.examQuestions.length > 0) {
-      const formattedQuestions = this.examQuestions
+      // Filter out any undefined or null questions
+      const validQuestions = this.examQuestions.filter(
+        (q) => q && q.title && q.questionType && q.mark && q.correctAnswer
+      );
+
+      if (validQuestions.length === 0) {
+        console.error('No valid questions to submit');
+        return;
+      }
+
+      const formattedQuestions = validQuestions
         .map((q) => this.formatQuestionData(q))
         .filter((q) => q !== null);
 
       if (formattedQuestions.length === 0) {
-        console.error('No valid questions to submit');
+        console.error('No valid questions to submit after formatting');
+        return;
+      }
+
+      // Validate each question has exactly one correct answer
+      const invalidQuestions = formattedQuestions.filter(
+        (q) => q.choices.filter((c) => c.isCorrect).length !== 1
+      );
+
+      if (invalidQuestions.length > 0) {
+        console.error('Each question must have exactly one correct answer');
         return;
       }
 

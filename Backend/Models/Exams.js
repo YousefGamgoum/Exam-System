@@ -73,6 +73,18 @@ examSchema.pre("save", function (next) {
   next();
 });
 
+examSchema.pre("findOneAndUpdate", function (next) {
+  const update = this.getUpdate();
+  if (update.questions) {
+    update.totalMarks = update.questions.reduce(
+      (total, question) => total + question.marks,
+      0
+    );
+    update.questionCount = update.questions.length;
+  }
+  next();
+});
+
 const Exam = mongoose.model("Exam", examSchema);
 
 module.exports = Exam;

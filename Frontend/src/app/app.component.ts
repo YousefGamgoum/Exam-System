@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { CreateExamComponent } from './Pages/create-exam/create-exam.component';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [CreateExamComponent, RouterModule],
+  standalone: true,
+  imports: [RouterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
