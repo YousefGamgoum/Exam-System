@@ -1,0 +1,58 @@
+<div class="container mt-4 mb-5">
+    <form [formGroup]="examForm" (ngSubmit)="onSubmit()">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Create Exam</h2>
+        </div>
+
+        <!-- Exam Title and Description -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="form-group mb-3">
+                    <label for="examTitle" class="form-label">Exam Title <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="examTitle" formControlName="examTitle"
+                        placeholder="Enter exam title">
+                    <div *ngIf="examForm.get('examTitle')?.invalid && examForm.get('examTitle')?.touched"
+                        class="text-danger">
+                        <small *ngIf="examForm.get('examTitle')?.errors?.['required']">Title is required</small>
+                        <small *ngIf="examForm.get('examTitle')?.errors?.['minlength']">Title must be at least 3
+                            characters</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="examDescription" class="form-label">Exam Description <span
+                            class="text-danger">*</span></label>
+                    <textarea class="form-control" id="examDescription" formControlName="examDescription" rows="3"
+                        placeholder="Enter exam description"></textarea>
+                    <div *ngIf="examForm.get('examDescription')?.invalid && examForm.get('examDescription')?.touched"
+                        class="text-danger">
+                        <small *ngIf="examForm.get('examDescription')?.errors?.['required']">Description is
+                            required</small>
+                        <small *ngIf="examForm.get('examDescription')?.errors?.['minlength']">Description must be at
+                            least 10 characters</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngFor="let questionIndex of questions; let i = index" class="question-container mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Question {{i + 1}}</h5>
+                    <button type="button" class="btn btn-danger btn-sm" (click)="deleteQuestion(i)">Delete
+                        Question</button>
+                </div>
+                <div class="card-body">
+                    <app-question [questionData]="examQuestions[i]" [questionIndex]="i"
+                        (questionAdded)="onQuestionAdded($event.data, $event.index)">
+                    </app-question>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 mb-5">
+            <button type="button" class="btn btn-primary me-2" (click)="addQuestion()">Add Question</button>
+            <button type="submit" class="btn btn-success"
+                [disabled]="!examForm.valid || examQuestions.length === 0">Create Exam</button>
+        </div>
+    </form>
+</div>
