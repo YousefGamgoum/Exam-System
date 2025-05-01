@@ -2,13 +2,14 @@ const { catchAsync } = require("../utils/catchAsync");
 
 const Exam = require("../Models/Exams");
 const Result = require("../Models/Results");
+const User = require("../Models/Users");
 const AppError = require("../utils/appError");
 
 exports.getAllExams = catchAsync(async (req, res, next) => {
   const exams = await Exam.find();
-  if (exams.length === 0) {
-    return next(new AppError(404, "No exams found"));
-  }
+  // if (exams.length === 0) {
+  //   return next(new AppError(404, "No exams found"));
+  // }
   res.status(200).json({
     status: "success",
     data: exams,
@@ -69,16 +70,16 @@ exports.getStudentsResults = catchAsync(async (req, res, next) => {
   const results = await Result.find()
     .populate({
       path: "user",
-      select: "name email",
+      select: "name email ",
     })
     .populate({
       path: "exam",
-      select: "name totalMarks",
+      select: "name totalMarks questionCount",
     });
 
-  if (results.length === 0) {
-    return next(new AppError(404, "No results found"));
-  }
+  // if (results.length === 0) {
+  //   return next(new AppError(404, "No results found"));
+  // }
   res.status(200).json({
     status: "success",
     data: results,

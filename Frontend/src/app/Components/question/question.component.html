@@ -1,0 +1,87 @@
+<div class="container">
+    <form [formGroup]="questionForm">
+        <!-- Title Input -->
+        <div class="form-group mb-3">
+            <label for="title" class="form-label">Question Title <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="title" formControlName="title"
+                placeholder="Enter question title">
+            <div *ngIf="questionForm.get('title')?.invalid && questionForm.get('title')?.touched" class="text-danger">
+                <small *ngIf="questionForm.get('title')?.errors?.['required']">Title is required</small>
+            </div>
+        </div>
+
+        <!-- Mark Input -->
+        <div class="form-group mb-3">
+            <label for="mark" class="form-label">Question Mark <span class="text-danger">*</span></label>
+            <input type="number" class="form-control" id="mark" formControlName="mark" placeholder="Enter question mark"
+                min="1">
+            <div *ngIf="questionForm.get('mark')?.invalid && questionForm.get('mark')?.touched" class="text-danger">
+                <small *ngIf="questionForm.get('mark')?.errors?.['required']">Mark is required</small>
+                <small *ngIf="questionForm.get('mark')?.errors?.['min']">Mark must be at least 1</small>
+            </div>
+        </div>
+
+        <!-- Question Type Selection -->
+        <div class="form-group mb-3">
+            <label for="questionType" class="form-label">Question Type <span class="text-danger">*</span></label>
+            <select class="form-select" id="questionType" formControlName="questionType"
+                (change)="onQuestionTypeChange()">
+                <option value="">Select question type</option>
+                <option value="trueFalse">True/False</option>
+                <option value="mcq">Multiple Choice</option>
+            </select>
+            <div *ngIf="questionForm.get('questionType')?.invalid && questionForm.get('questionType')?.touched"
+                class="text-danger">
+                <small *ngIf="questionForm.get('questionType')?.errors?.['required']">Question type is required</small>
+            </div>
+        </div>
+
+        <!-- True/False Section -->
+        <div *ngIf="questionForm.get('questionType')?.value === 'trueFalse'" class="true-false-section">
+            <div class="form-group mb-3">
+                <label class="form-label">Correct Answer <span class="text-danger">*</span></label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="correctAnswer" value="true"
+                        formControlName="correctAnswer">
+                    <label class="form-check-label">True</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="correctAnswer" value="false"
+                        formControlName="correctAnswer">
+                    <label class="form-check-label">False</label>
+                </div>
+                <div *ngIf="questionForm.get('correctAnswer')?.invalid && questionForm.get('correctAnswer')?.touched"
+                    class="text-danger">
+                    <small *ngIf="questionForm.get('correctAnswer')?.errors?.['required']">Please select the correct
+                        answer</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- MCQ Section -->
+        <div *ngIf="questionForm.get('questionType')?.value === 'mcq'" class="mcq-section">
+            <div class="form-group mb-3" *ngFor="let option of mcqOptions; let i = index">
+                <label [for]="'option' + i" class="form-label">Option {{i + 1}} <span
+                        class="text-danger">*</span></label>
+                <div class="input-group">
+                    <input type="text" class="form-control" [id]="'option' + i" [formControlName]="'option' + i"
+                        placeholder="Enter option {{i + 1}}">
+                    <div class="input-group-text">
+                        <input class="form-check-input" type="radio" name="correctAnswer" [value]="i"
+                            formControlName="correctAnswer">
+                    </div>
+                </div>
+                <div *ngIf="questionForm.get('option' + i)?.invalid && questionForm.get('option' + i)?.touched"
+                    class="text-danger">
+                    <small *ngIf="questionForm.get('option' + i)?.errors?.['required']">Option {{i + 1}} is
+                        required</small>
+                </div>
+            </div>
+            <div *ngIf="questionForm.get('correctAnswer')?.invalid && questionForm.get('correctAnswer')?.touched"
+                class="text-danger">
+                <small *ngIf="questionForm.get('correctAnswer')?.errors?.['required']">Please select the correct
+                    answer</small>
+            </div>
+        </div>
+    </form>
+</div>

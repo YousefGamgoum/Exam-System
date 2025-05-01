@@ -57,6 +57,9 @@ const examSchema = new mongoose.Schema(
     totalMarks: {
       type: Number,
     },
+    questionCount: {
+      type: Number,
+    },
   },
   { timestamps: true }
 );
@@ -66,6 +69,7 @@ examSchema.pre("save", function (next) {
     (total, question) => total + question.marks,
     0
   );
+  this.questionCount = this.questions.length;
   next();
 });
 
