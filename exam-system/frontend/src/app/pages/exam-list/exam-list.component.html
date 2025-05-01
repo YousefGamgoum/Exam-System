@@ -1,0 +1,22 @@
+<div class="container">
+  <h2>Available Exams</h2>
+  @if (errorMessage) {
+  <div class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+  } @if (exams.length === 0 && !errorMessage) {
+  <div class="alert alert-info">No exams available currently</div>
+  }
+  <div class="exam-list">
+    @for (exam of exams; track exam._id) {
+    <div class="exam-card">
+      <h3>{{ exam.name }}</h3>
+      <p>{{ exam.description }}</p>
+      <p>Total Marks: {{ exam.totalMarks }}</p>
+      <button class="btn btn-primary" [routerLink]="['/take-exam', exam._id]">
+        Take Exam
+      </button>
+    </div>
+    }
+  </div>
+</div>
