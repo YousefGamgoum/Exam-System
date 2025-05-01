@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const bcryptjs = require("bcryptjs");
 
 const userSchema = mongoose.Schema({
-  userName: {
+  username: {
     type: String,
     required: [true, "User name is required"],
     unique: [true, "This name is already in use."],
@@ -17,7 +17,7 @@ const userSchema = mongoose.Schema({
       validator: function (v) {
         return /^[a-zA-Z0-9._-]{3,15}(@)(gmail|yahoo)(.com)$/.test(v);
       },
-      message: () => "Invaild Email",
+      message: "Invaild Email",
     },
   },
 

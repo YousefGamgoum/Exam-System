@@ -2,68 +2,56 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private apiUrl = 'http://localhost:3000/users';
-  private tokenKey = 'auth_token';
-  private loggedInSubject = new BehaviorSubject<boolean>(this.isLoggedIn()); // أضيفي ده
+  private loggedInStatus = new BehaviorSubject<boolean>(this.hasToken());
+  private userRole = new BehaviorSubject<string | null>(this.getStoredRole());
 
-  constructor(private http: HttpClient, private router: Router) {
-    this.checkInitialLoginStatus();
+  constructor(private http: HttpClient) {}
+
+  register(userData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, userData);
   }
 
-  private checkInitialLoginStatus(): void {
-    const isLoggedIn = !!localStorage.getItem(this.tokenKey);
-    this.loggedInSubject.next(isLoggedIn);
-  }
-
-  getLoggedInStatus(): Observable<boolean> {
-    return this.loggedInSubject.asObservable();
-  }
-
-  register(userData: {
-    username: string;
-    email: string;
-    password: string;
-  }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, userData).pipe(
-      tap(() => {
-        this.router.navigate(['/login']);
-      })
-    );
-  }
-
-  login(credentials: { email: string; password: string }): Observable<any> {
+  login(credentials: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
       tap((response: any) => {
-        if (response.token) {
-          localStorage.setItem(this.tokenKey, response.token);
-          this.loggedInSubject.next(true);
+        if (response && response.token) {
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('role', response.role);
+          this.loggedInStatus.next(true);
+          this.userRole.next(response.role);
+          console.log('Role saved in AuthService:', response.role);
         }
       })
     );
   }
 
   logout(): void {
-    localStorage.removeItem(this.tokenKey);
-    this.loggedInSubject.next(false);
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    this.loggedInStatus.next(false);
+    this.userRole.next(null);
+    console.log('Logged out, role cleared');
   }
 
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem(this.tokenKey);
+  getLoggedInStatus(): Observable<boolean> {
+    return this.loggedInStatus.asObservable();
   }
 
-  getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+  getUserRole(): Observable<string | null> {
+    return this.userRole.asObservable();
   }
-}
-function открыть(
-  arg0: string,
-  credentials: { email: string; password: string }
-) {
-  throw new Error('Function not implemented.');
+
+  private hasToken(): boolean {
+    return !!localStorage.getItem('token');
+  }
+
+  private getStoredRole(): string | null {
+    return localStorage.getItem('role');
+  }
 }

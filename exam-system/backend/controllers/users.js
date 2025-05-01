@@ -1,3 +1,4 @@
+
 const userModel = require("../models/user");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -5,20 +6,30 @@ const { catchAsync } = require("../utils/catchAsync");
 
 // register
 exports.register = catchAsync(async (req, res) => {
-  let user = await userModel.create(req.body);
+  if (!req.body.username || !req.body.email || !req.body.password) {
+    return res.status(400).json({
+      status: "fail",
+      message: "Username, email, and password are required",
+    });
+  }
+
+  let user = await userModel.create({
+    username: req.body.username.trim().toLowerCase(),
+    email: req.body.email.trim().toLowerCase(),
+    password: req.body.password,
+    role: "student",
+  });
 
   res.status(200).json({
     status: "success",
-    message: "Registration successfuly",
+    message: "Registration successful",
   });
 });
 
 //login
 exports.login = catchAsync(async (req, res) => {
-  let { email, password } = req.body;
-
   //   no write email or pass
-  if (!email || !password) {
+  if (!req.body.email || !req.body.password) {
     return res.status(404).json({
       status: "fail",
       message: "you must provide email and password to login ",
@@ -26,7 +37,7 @@ exports.login = catchAsync(async (req, res) => {
   }
 
   //   search email
-  let user = await userModel.findOne({ email });
+  let user = await userModel.findOne({ email: req.body.email });
 
   //   invalid email or no register
   if (!user) {
@@ -37,7 +48,7 @@ exports.login = catchAsync(async (req, res) => {
   }
 
   //   if vaild email , compare pass
-  let isvalid = await bcryptjs.compare(password, user.password);
+  let isvalid = await user.comparePassword(req.body.password);
   if (!isvalid) {
     return res.status(401).json({
       status: "fail",
@@ -54,5 +65,6 @@ exports.login = catchAsync(async (req, res) => {
   res.status(200).json({
     status: "success",
     token,
+    role: user.role,
   });
 });

@@ -3,11 +3,15 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
+const examRoutes = require("./routes/examRoutes");
+const resultRoutes = require("./routes/resultRoutes");
+
 const AppError = require("./utils/AppError");
 
 dotenv.config();
 const app = express();
 app.use(cors());
+// Middleware to parse JSON
 app.use(express.json());
 
 mongoose.set("strictQuery", true);
@@ -21,7 +25,10 @@ mongoose
     console.log("MongoDB connection error:", err);
   });
 
+// routes
 app.use("/users", userRoutes);
+app.use("/exams", examRoutes);
+app.use("/results", resultRoutes);
 
 // not found
 app.use((req, res, next) => {
