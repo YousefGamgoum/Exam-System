@@ -1,0 +1,31 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h1 class="text-center mb-4">Welcome to the Exam System</h1>
+
+      @if (loggedIn) {
+      <p class="text-center">
+        You are logged in! Check out the available exams or view your results.
+      </p>
+      <div class="d-flex justify-content-center gap-3">
+        <a class="btn btn-primary" [routerLink]="['/exam-list']"
+          >Available Exams</a
+        >
+        <a class="btn btn-secondary" [routerLink]="['/results']"
+          >View Results</a
+        >
+      </div>
+      } @else {
+      <p class="text-center">
+        Please log in or register to access the exam system.
+      </p>
+      <div class="d-flex justify-content-center gap-3">
+        <a class="btn btn-primary" [routerLink]="['/account/login']">Login</a>
+        <a class="btn btn-secondary" [routerLink]="['/account/register']"
+          >Register</a
+        >
+      </div>
+      }
+    </div>
+  </div>
+</div>

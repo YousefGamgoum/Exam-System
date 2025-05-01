@@ -1,37 +1,41 @@
-// Require Imports
+
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
-const examsRoutes = require("./Routes/examRoutes");
 const dotenv = require("dotenv");
+const cors = require("cors");
+const userRoutes = require("./routes/userRoutes");
+const examRoutes = require("./routes/examRoutes");
+const resultRoutes = require("./routes/resultRoutes");
 
+const AppError = require("./utils/AppError");
+const examsRoutes = require("./Routes/examRoutes");
 dotenv.config();
-
-//Database Connection
-mongoose
-  .connect(process.env.DATABASE_URL)
-  .then(() => {
-    console.log("Database Connected");
-  })
-  .catch((err) => {});
-
-// Create express instance
 const app = express();
-
-// Standerd middlewares
 app.use(cors());
+// Middleware to parse JSON
 app.use(express.json());
-app.use(express.static("./Static"));
 
-// Routes
-// app.use("/users", userRoutes);
+mongoose.set("strictQuery", true);
 
+mongoose
+  .connect("mongodb://127.0.0.1:27017/exam-system")
+  .then(() => {
+    console.log("connect to mongodb");
+  })
+  .catch((err) => {
+    console.log("MongoDB connection error:", err);
+  });
+
+// routes
+app.use("/users", userRoutes);
+app.use("/exams", examRoutes);
+app.use("/results", resultRoutes);
 app.use("/exams", examsRoutes);
-
-// NotFound Middleware
-app.use(function (req, res, next) {
+// not found
+app.use((req, res, next) => {
   next(new AppError(404, "Route Not Found"));
 });
+
 
 // Error MiddleWare
 app.use((err, req, res, next) => {
@@ -81,6 +85,8 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start Listening
 const port = 3000;
-app.listen(port, () => {});
+app.listen(port, () => {
+  console.log(`server started listen port ${port}`);
+});
+

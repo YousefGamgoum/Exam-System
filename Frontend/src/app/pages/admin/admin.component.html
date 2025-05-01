@@ -1,0 +1,217 @@
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">Admin Dashboard</h2>
+
+  <!-- Form to Create/Edit Exam -->
+  <div class="row justify-content-center mb-5">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">
+            {{ isEditing ? "Edit Exam" : "Create New Exam" }}
+          </h5>
+          <form (ngSubmit)="isEditing ? updateExam() : createExam()">
+            <div class="mb-3">
+              <label for="name" class="form-label">Exam Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                [(ngModel)]="newExam.name"
+                name="name"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea
+                class="form-control"
+                id="description"
+                [(ngModel)]="newExam.description"
+                name="description"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="totalMarks" class="form-label">Total Marks</label>
+              <input
+                type="number"
+                class="form-control"
+                id="totalMarks"
+                [(ngModel)]="newExam.totalMarks"
+                name="totalMarks"
+                readonly
+              />
+            </div>
+
+            <!-- Questions -->
+            <div class="mb-3">
+              <h6>Questions</h6>
+              <div
+                *ngFor="let question of newExam.questions; let i = index"
+                class="mb-3 border p-3"
+              >
+                <div class="mb-2">
+                  <label [for]="'questionText-' + i" class="form-label"
+                    >Question {{ i + 1 }}</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    [id]="'questionText-' + i"
+                    [(ngModel)]="question.text"
+                    [name]="'questionText-' + i"
+                    required
+                  />
+                </div>
+                <div class="mb-2">
+                  <label [for]="'questionMarks-' + i" class="form-label"
+                    >Marks</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    [id]="'questionMarks-' + i"
+                    [(ngModel)]="question.marks"
+                    [name]="'questionMarks-' + i"
+                    (input)="calculateTotalMarks()"
+                    required
+                  />
+                </div>
+                <div class="mb-2">
+                  <label class="form-label">Choices</label>
+                  <div
+                    *ngFor="let choice of question.choices; let j = index"
+                    class="input-group mb-2"
+                  >
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="choice.text"
+                      [name]="'choice-' + i + '-' + j"
+                      required
+                    />
+                    <div class="input-group-text">
+                      <input
+                        type="radio"
+                        [id]="'correctChoice-' + i + '-' + j"
+                        [(ngModel)]="choice.isCorrect"
+                        [name]="'correctChoice-' + i"
+                        [value]="true"
+                      />
+                      <label [for]="'correctChoice-' + i + '-' + j" class="ms-2"
+                        >Correct</label
+                      >
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-danger btn-sm"
+                  (click)="removeQuestion(i)"
+                >
+                  Remove Question
+                </button>
+              </div>
+              <button
+                type="button"
+                class="btn btn-secondary btn-sm"
+                (click)="addQuestion()"
+              >
+                Add Question
+              </button>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+              {{ isEditing ? "Update Exam" : "Create Exam" }}
+            </button>
+            @if (isEditing) {
+            <button
+              type="button"
+              class="btn btn-secondary ms-2"
+              (click)="resetForm()"
+            >
+              Cancel
+            </button>
+            }
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- List of Exams -->
+  <div class="row mb-5">
+    <div class="col-md-12">
+      <h5 class="mb-3">Existing Exams</h5>
+      @if (exams.length === 0) {
+      <p>No exams available.</p>
+      } @else {
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Total Marks</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let exam of exams">
+            <td>{{ exam.name }}</td>
+            <td>{{ exam.description || "No description" }}</td>
+            <td>{{ exam.totalMarks }}</td>
+            <td>
+              <button
+                class="btn btn-warning btn-sm me-2"
+                (click)="editExam(exam)"
+              >
+                Edit
+              </button>
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="deleteExam(exam._id)"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      }
+    </div>
+  </div>
+
+  <!-- Student Results -->
+  <div class="row">
+    <div class="col-md-12">
+      <h5 class="mb-3">Student Results</h5>
+      @if (errorMessage) {
+      <div class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+      </div>
+      } @if (results.length === 0 && !errorMessage) {
+      <p>No results available.</p>
+      } @if (results.length > 0) {
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Student Name</th>
+            <th>Exam Name</th>
+            <th>Score</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (result of results; track result._id) {
+          <tr>
+            <td>{{ result.userName }}</td>
+            <td>{{ result.examName }}</td>
+            <td>{{ result.score }}</td>
+            <td>{{ result.createdAt | date : "short" }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      }
+    </div>
+  </div>
+</div>
