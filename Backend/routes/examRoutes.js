@@ -1,19 +1,26 @@
-const express = require("express");
 const {
-  getAllExams,
-  getExamById,
-  submitExam, // New controller for submitting exams
-} = require("../controllers/examController");
-const { auth, restrictTo } = require("../middlewares/auth");
+  getExamResultById,
+  updateExamById,
+  deleteExamById,
+  createExam,
+  getStudentsResults,
+  getExams,
+  getExamdetails,
+} = require("../Controllers/examController");
 
-const router = express.Router();
+const { userRoleDetect } = require("../Middlewares/auth");
+const router = require("express").Router();
 
-router.get("/", auth, getAllExams);
-router.get("/:id", auth, getExamById);
-router.post("/submit", auth, submitExam);
+// router.use(userRoleDetect("admin", "student"));
 
-// router.post("/", auth, restrictTo("admin"), createExam);
-// router.put("/:id", auth, restrictTo("admin"), updateExam);
-// router.delete("/:id", auth, restrictTo("admin"), deleteExam);
+// router.use(userRoleDetect("admin"));
+router.get("/students-results", getStudentsResults);
+router.post("/create", createExam);
+router.get("/all", getExams);
+router.get("/:id/exam", getExamdetails);
+router.get("/:id", getExamResultById);
+router.put("/:id", updateExamById);
+router.delete("/:id", deleteExamById);
+// router.get("/:id/results", getExamResults);
 
 module.exports = router;
