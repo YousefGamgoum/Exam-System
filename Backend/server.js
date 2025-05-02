@@ -3,9 +3,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const userRoutes = require("./routes/userRoutes");
-const examRoutes = require("./routes/examRoutes");
-const resultRoutes = require("./routes/resultRoutes");
+const userRoutes = require("./Routes/userRoutes");
+const examRoutes = require("./Routes/examRoutes");
+const resultRoutes = require("./Routes/resultRoutes");
 
 const AppError = require("./utils/AppError");
 const examsRoutes = require("./Routes/examRoutes");
@@ -30,7 +30,6 @@ mongoose
 app.use("/users", userRoutes);
 app.use("/exams", examRoutes);
 app.use("/results", resultRoutes);
-app.use("/exams", examsRoutes);
 // not found
 app.use((req, res, next) => {
   next(new AppError(404, "Route Not Found"));

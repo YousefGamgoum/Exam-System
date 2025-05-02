@@ -36,7 +36,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ExamService } from '../../services/exam.service';
+import { ExamService } from '../../Services/exam.service';
 import { Exam } from '../../models/exam';
 
 @Component({

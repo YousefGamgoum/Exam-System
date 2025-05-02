@@ -3,8 +3,8 @@ const express = require("express");
 const {
   getUserResults,
   getAllStudentResults,
-} = require("../controllers/resultController");
-const { auth, restrictTo } = require("../middlewares/auth");
+} = require("../Controllers/resultController");
+const { auth, restrictTo } = require("../Middlewares/auth");
 
 const router = express.Router();
 

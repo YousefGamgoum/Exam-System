@@ -1,7 +1,7 @@
 const { json } = require("express");
 const jwt = require("jsonwebtoken");
-const AppError = require("../utils/AppError");
-const { catchAsync } = require("../utils/catchAsync");
+const AppError = require("../Utils/AppError");
+const { catchAsync } = require("../Utils/catchAsync");
 
 exports.auth = catchAsync(function (req, res, next) {
   const { authorization } = req.headers;

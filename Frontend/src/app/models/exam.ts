@@ -14,5 +14,14 @@ export interface Exam {
   name: string;
   description: string;
   totalMarks: number;
-  questions: Question[];
+  questionCount: number;
+  submissionCount: number;
+  questions: {
+    questionText: string;
+    marks: number;
+    choices: {
+      text: string;
+      isCorrect: boolean;
+    }[];
+  }[];
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router'; // Add this
-import { ExamService } from '../../services/exam.service';
+import { ExamService } from '../../Services/exam.service';
 import { Exam } from '../../models/exam';
 
 @Component({
@@ -24,7 +24,7 @@ export class ExamListComponent implements OnInit {
     this.examService.getAvailableExams().subscribe({
       next: (response) => {
         if (response.status === 'success') {
-          this.exams = response.data;
+          this.exams = response.data.examResults;
         }
       },
       error: (err) => {

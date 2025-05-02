@@ -1,3 +1,4 @@
+import { ExamService } from '../../Services/exam.service';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -16,6 +17,7 @@ interface ApiResponse {
   data: {
     examResults: Exam[];
   };
+  message?: string;
 }
 
 @Component({
@@ -30,7 +32,11 @@ export class ExamsComponent implements OnInit {
   loading: boolean = true;
   error: string | null = null;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private examService: ExamService
+  ) {}
 
   ngOnInit() {
     this.fetchExams();

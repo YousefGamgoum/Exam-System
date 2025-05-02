@@ -1,7 +1,6 @@
-
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ExamService } from '../../services/exam.service';
+import { ExamService } from '../../Services/exam.service';
 import { Exam, Question } from '../../models/exam';
 
 @Component({

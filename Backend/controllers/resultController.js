@@ -26,9 +26,9 @@
 //   res.status(200).json({ status: "success", data: formattedResults });
 // });
 
-const Result = require("../models/result");
-const AppError = require("../utils/AppError");
-const { catchAsync } = require("../utils/catchAsync");
+const Result = require("../Models/Results");
+const AppError = require("../Utils/AppError");
+const { catchAsync } = require("../Utils/catchAsync");
 
 exports.getUserResults = catchAsync(async (req, res, next) => {
   if (!req.id) {

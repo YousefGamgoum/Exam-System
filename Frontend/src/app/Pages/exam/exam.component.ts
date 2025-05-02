@@ -59,7 +59,7 @@ export class ExamComponent implements OnInit {
 
   fetchExamDetails(examId: string) {
     this.http
-      .get<ApiResponse>(`http://localhost:3000/exams/${examId}`)
+      .get<ApiResponse>(`http://localhost:3000/exams/${examId}/exam-result`)
       .subscribe({
         next: (response) => {
           this.exam = response.data.exam;
