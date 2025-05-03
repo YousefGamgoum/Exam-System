@@ -6,13 +6,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 interface User {
   _id: string;
   email: string;
-  name: string;
+  username: string;
 }
 
 interface ExamResult {
   _id: string;
   score: number;
   user: User[];
+  createdAt: string;
 }
 
 interface Exam {
@@ -21,6 +22,7 @@ interface Exam {
   description: string;
   totalMarks: number;
   questionCount: number;
+  available: boolean;
 }
 
 interface ApiResponse {
@@ -62,6 +64,7 @@ export class ExamComponent implements OnInit {
       .get<ApiResponse>(`http://localhost:3000/exams/${examId}/exam-result`)
       .subscribe({
         next: (response) => {
+          console.log(response);
           this.exam = response.data.exam;
           this.results = response.data.results;
           this.loading = false;
@@ -78,21 +81,36 @@ export class ExamComponent implements OnInit {
     this.router.navigate(['/update-exam', examId]);
   }
 
-  deleteExam(examId: string) {
-    if (
-      confirm(
-        'Are you sure you want to delete this exam? This action cannot be undone.'
-      )
-    ) {
+  deleteExam(examId: string, event: Event) {
+    event.stopPropagation(); // Prevent card click event
+    event.preventDefault();
+    if (confirm('Are you sure you want to Disable this exam?')) {
       this.http.delete(`http://localhost:3000/exams/${examId}`).subscribe({
         next: () => {
-          this.router.navigate(['/exams']);
+          this.fetchExamDetails(examId);
         },
         error: (err) => {
-          this.error = 'Failed to delete exam';
+          alert('Failed to delete exam. Please try again.');
           console.error('Error deleting exam:', err);
         },
       });
+    }
+  }
+  EnableExam(examId: string, event: Event) {
+    event.stopPropagation(); // Prevent card click event
+    event.preventDefault();
+    if (confirm('Are you sure you want to enable this exam?')) {
+      this.http
+        .post(`http://localhost:3000/exams/${examId}/enable`, {})
+        .subscribe({
+          next: () => {
+            this.fetchExamDetails(examId);
+          },
+          error: (err) => {
+            alert('Failed to delete exam. Please try again.');
+            console.error('Error deleting exam:', err);
+          },
+        });
     }
   }
 }

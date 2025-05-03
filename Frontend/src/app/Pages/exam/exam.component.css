@@ -40,11 +40,20 @@
 
 /* Exam Header Styles */
 .exam-header {
-    background: linear-gradient(135deg, #2c3e50, #3498db);
-    color: white;
     padding: 3rem;
     border-radius: 10px;
     margin-bottom: 2rem;
+    transition: all 0.3s ease;
+}
+
+.exam-content .exam-header.available {
+    background: #4CAF50 !important;
+    color: white !important;
+}
+
+.exam-content .exam-header.unavailable {
+    background: #f44336 !important;
+    color: white !important;
 }
 
 .header-content {
@@ -59,6 +68,7 @@
     gap: 1.2rem;
 }
 
+.enable-btn,
 .update-btn,
 .delete-btn {
     padding: 0.8rem 1.5rem;
@@ -111,7 +121,24 @@
     box-shadow: 0 2px 4px rgba(231, 76, 60, 0.2);
 }
 
+.enable-btn {
+    background-color: #007d84;
+    color: white;
+}
+
+.enable-btn:hover {
+    background-color: #007d84;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(231, 76, 60, 0.2);
+}
+
+.enable-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(231, 76, 60, 0.2);
+}
+
 /* Add ripple effect */
+.enable-btn::after,
 .update-btn::after,
 .delete-btn::after {
     content: '';

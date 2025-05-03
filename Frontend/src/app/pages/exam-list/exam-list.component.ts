@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router'; // Add this
+import { RouterLink } from '@angular/router';
 import { ExamService } from '../../Services/exam.service';
 import { Exam } from '../../models/exam';
 
 @Component({
   selector: 'app-exam-list',
   standalone: true,
-  imports: [RouterLink], // Add this
+  imports: [RouterLink],
   templateUrl: './exam-list.component.html',
   styleUrl: './exam-list.component.css',
 })
@@ -24,11 +24,11 @@ export class ExamListComponent implements OnInit {
     this.examService.getAvailableExams().subscribe({
       next: (response) => {
         if (response.status === 'success') {
-          this.exams = response.data.examResults;
+          this.exams = response.data; // هنا الـ data هو Exam[] مباشرة
         }
       },
       error: (err) => {
-        this.errorMessage = err.error.message || 'Failed to load exams';
+        this.errorMessage = err.error?.message || 'Failed to load exams';
       },
     });
   }

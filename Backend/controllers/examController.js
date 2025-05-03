@@ -10,6 +10,9 @@ exports.getExamdetails = catchAsync(async (req, res, next) => {
   if (!exams) {
     return next(new AppError(404, "Exam not found"));
   }
+  if (!exams.available) {
+    return next(new AppError(404, "Exam is not available"));
+  }
   res.status(200).json({
     status: "success",
     data: exams,
@@ -19,6 +22,11 @@ exports.getExamdetails = catchAsync(async (req, res, next) => {
 exports.getExamResultById = catchAsync(async (req, res, next) => {
   const { id } = req.params;
   const exam = await Exam.findById(id);
+
+  if (!exam) {
+    return next(new AppError(404, "Exam not found"));
+  }
+
   const results = await Result.aggregate([
     {
       $match: { exam: exam._id },
@@ -39,10 +47,16 @@ exports.getExamResultById = catchAsync(async (req, res, next) => {
         as: "user",
       },
     },
+    {
+      $project: {
+        _id: 1,
+        user: 1,
+        score: 1,
+        createdAt: 1,
+      },
+    },
   ]);
-  if (exam.length === 0) {
-    return next(new AppError(404, "Exam not found"));
-  }
+
   res.status(200).json({
     status: "success",
     data: {
@@ -52,6 +66,7 @@ exports.getExamResultById = catchAsync(async (req, res, next) => {
         description: exam.description,
         totalMarks: exam.totalMarks,
         questionCount: exam.questionCount,
+        available: exam.available,
       },
       results,
     },
@@ -78,7 +93,9 @@ exports.updateExamById = catchAsync(async (req, res, next) => {
 // get all exams
 exports.getAllExams = catchAsync(async (req, res, next) => {
   // Get all exams
-  const exams = await Exam.find().select("name description totalMarks");
+  const exams = await Exam.find({ available: true }).select(
+    "name description totalMarks questionCount"
+  );
 
   if (!exams.length) {
     return next(new AppError(404, "No available exams"));
@@ -105,11 +122,39 @@ exports.getAllExams = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: "success", data: availableExams });
 });
 
+// Get all exams for admin without filtering
+exports.getAllExamsAdmin = catchAsync(async (req, res, next) => {
+  // Check if user is admin
+  if (req.role !== "admin") {
+    return next(
+      new AppError(403, "You don't have permission to access this resource")
+    );
+  }
+
+  const exams = await Exam.find().select(
+    "name description totalMarks questionCount"
+  );
+
+  if (!exams.length) {
+    return res.status(200).json({
+      status: "success",
+      data: [],
+      message: "No exams found",
+    });
+  }
+
+  res.status(200).json({ status: "success", data: exams });
+});
+
 // Get exam by ID
 exports.getExamById = catchAsync(async (req, res, next) => {
-  const exam = await Exam.findById(req.params.id);
+  const { id } = req.params;
+  const exam = await Exam.findById(id);
   if (!exam) {
     return next(new AppError(404, "Exam not found"));
+  }
+  if (!exam.available) {
+    return next(new AppError(404, "Exam is not available"));
   }
 
   res.status(200).json({ status: "success", data: exam });
@@ -117,10 +162,13 @@ exports.getExamById = catchAsync(async (req, res, next) => {
 
 exports.deleteExamById = catchAsync(async (req, res, next) => {
   const { id } = req.params;
-  const exam = await Exam.findByIdAndDelete(id);
+  const exam = await Exam.findById(id);
   if (!exam) {
     return next(new AppError(404, "Exam not found"));
   }
+
+  exam.available = false;
+  await exam.save();
 
   res.status(200).json({
     status: "success",
@@ -141,11 +189,11 @@ exports.getStudentsResults = catchAsync(async (req, res, next) => {
   const results = await Result.find()
     .populate({
       path: "user",
-      select: "name email ",
+      select: "email username",
     })
     .populate({
       path: "exam",
-      select: "name totalMarks questionCount",
+      select: "name totalMarks questionCount available",
     });
 
   // if (results.length === 0) {
@@ -165,6 +213,7 @@ exports.getExams = catchAsync(async (req, res, next) => {
         name: 1,
         questionCount: 1,
         totalMarks: 1,
+        available: 1,
       },
     },
   ]);
@@ -206,7 +255,9 @@ exports.submitExam = catchAsync(async (req, res, next) => {
   if (!exam) {
     return next(new AppError(404, "Exam not found"));
   }
-
+  if (!exam.available) {
+    return next(new AppError(404, "Exam is not available"));
+  }
   let score = 0;
   exam.questions.forEach((question, index) => {
     const userAnswer = answers.find((ans) => ans.questionIndex === index);
@@ -226,4 +277,18 @@ exports.submitExam = catchAsync(async (req, res, next) => {
   });
 
   res.status(201).json({ status: "success", data: { score, result } });
+});
+
+exports.enableExam = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const exam = await Exam.findById(id);
+  if (!exam) {
+    return next(new AppError(404, "Exam not found"));
+  }
+  exam.available = true;
+  await exam.save();
+  res.status(200).json({
+    status: "success",
+    message: "Exam enabled successfully",
+  });
 });

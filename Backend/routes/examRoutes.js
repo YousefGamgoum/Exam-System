@@ -11,6 +11,7 @@ const {
   getExamResultById,
   updateExamById,
   deleteExamById,
+  enableExam,
 } = require("../Controllers/examController");
 const { auth, restrictTo } = require("../Middlewares/auth");
 
@@ -19,6 +20,7 @@ router.get("/all", getExams);
 router.get("/students-results", getStudentsResults);
 router.get("/:id", auth, getExamById);
 router.post("/submit", auth, submitExam);
+router.post("/:id/enable", enableExam);
 // router.use(userRoleDetect("admin", "student"));
 
 // router.use(userRoleDetect("admin"));

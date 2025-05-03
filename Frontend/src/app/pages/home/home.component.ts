@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Subscription } from 'rxjs';
+declare let AOS: any;
 
 @Component({
   selector: 'app-home',
@@ -12,10 +13,14 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  loggedIn: boolean = false; // هنحتفظ بحالة الـ login هنا
+  loggedIn: boolean = false; 
   private subscription!: Subscription;
 
   constructor(private authService: AuthService) {}
+
+  ngAfterViewInit(): void {
+    AOS.init();
+  }
 
   ngOnInit(): void {
     this.subscription = this.authService

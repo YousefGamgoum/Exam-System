@@ -14,23 +14,19 @@ export class ExamService {
   // Get all available exams
   getAvailableExams(): Observable<{
     status: string;
-    data: {
-      examResults: Exam[];
-    };
+    data: Exam[];
     message?: string;
   }> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<{
-      status: string;
-      data: {
-        examResults: Exam[];
-      };
-      message?: string;
-    }>(`${this.apiUrl}/exams/all`, { headers });
+    return this.http.get<{ status: string; data: Exam[]; message?: string }>(
+      `${this.apiUrl}/exams`,
+      { headers }
+    );
   }
+
   getAllExams(): Observable<{
     status: string;
     data: Exam[];
@@ -45,6 +41,7 @@ export class ExamService {
       { headers }
     );
   }
+
   // Get exam by ID
   getExamById(
     id: string
@@ -169,13 +166,7 @@ export class ExamService {
   // Get all students' results (admin only)
   getAllStudentResults(): Observable<{
     status: string;
-    data: {
-      _id: string;
-      examName: string;
-      score: number;
-      createdAt: string;
-      userName: string;
-    }[];
+    data: any[];
     message?: string;
   }> {
     const token = localStorage.getItem('token');
@@ -184,14 +175,25 @@ export class ExamService {
     });
     return this.http.get<{
       status: string;
-      data: {
-        _id: string;
-        examName: string;
-        score: number;
-        createdAt: string;
-        userName: string;
-      }[];
+      data: any[];
       message?: string;
-    }>(`${this.apiUrl}/results/all`, { headers });
+    }>(`${this.apiUrl}/exams/students-results`, { headers });
+  }
+
+  // Get exams with submission counts
+  getExamsWithCounts(): Observable<{
+    status: string;
+    data: { examResults: any[] };
+    message?: string;
+  }> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.get<{
+      status: string;
+      data: { examResults: any[] };
+      message?: string;
+    }>(`${this.apiUrl}/exams/with-counts`, { headers });
   }
 }

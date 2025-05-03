@@ -10,6 +10,7 @@ interface Exam {
   totalMarks: number;
   questionCount: number;
   submissionCount: number;
+  available: boolean;
 }
 
 interface ApiResponse {
@@ -58,10 +59,11 @@ export class ExamsComponent implements OnInit {
 
   deleteExam(examId: string, event: Event) {
     event.stopPropagation(); // Prevent card click event
-    if (confirm('Are you sure you want to delete this exam?')) {
+    event.preventDefault();
+    if (confirm('Are you sure you want to Disable this exam?')) {
       this.http.delete(`http://localhost:3000/exams/${examId}`).subscribe({
         next: () => {
-          this.exams = this.exams.filter((exam) => exam._id !== examId);
+          this.fetchExams();
         },
         error: (err) => {
           alert('Failed to delete exam. Please try again.');
@@ -70,7 +72,23 @@ export class ExamsComponent implements OnInit {
       });
     }
   }
-
+  EnableExam(examId: string, event: Event) {
+    event.stopPropagation(); // Prevent card click event
+    event.preventDefault();
+    if (confirm('Are you sure you want to enable this exam?')) {
+      this.http
+        .post(`http://localhost:3000/exams/${examId}/enable`, {})
+        .subscribe({
+          next: () => {
+            this.fetchExams();
+          },
+          error: (err) => {
+            alert('Failed to delete exam. Please try again.');
+            console.error('Error deleting exam:', err);
+          },
+        });
+    }
+  }
   navigateToUpdate(examId: string, event: Event) {
     event.stopPropagation(); // Prevent card click event
     this.router.navigate(['/update-exam', examId]);

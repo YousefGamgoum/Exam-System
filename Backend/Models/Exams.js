@@ -60,6 +60,10 @@ const examSchema = new mongoose.Schema(
     questionCount: {
       type: Number,
     },
+    available: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );

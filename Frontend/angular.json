@@ -3,9 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-
     "Frontend": {
-
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -18,9 +16,7 @@
             "outputPath": "dist/frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
 
             "tsConfig": "tsconfig.app.json",
             "assets": [
@@ -31,11 +27,14 @@
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/aos/dist/aos.css"
             ],
 
-            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.bundle.js"]
-
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.js",
+              "node_modules/aos/dist/aos.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -65,12 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-
               "buildTarget": "Frontend:build:production"
             },
             "development": {
               "buildTarget": "Frontend:build:development"
-
             }
           },
           "defaultConfiguration": "development"
@@ -81,11 +78,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
 
             "tsConfig": "tsconfig.spec.json",
             "assets": [
@@ -95,19 +88,15 @@
               }
             ],
 
-            "styles": [
-              "src/styles.css"
-            ],
+            "styles": ["src/styles.css"],
 
             "scripts": []
           }
         }
       }
     }
-
   },
   "cli": {
     "analytics": "940a45be-7673-4042-963c-99f1df3b7333"
-
   }
 }

@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-
 import { RegisterComponent } from './Pages/account/register/register.component';
 import { LoginComponent } from './Pages/account/login/login.component';
 import { ExamListComponent } from './Pages/exam-list/exam-list.component';
@@ -11,7 +10,7 @@ import { AccountComponent } from './Pages/account/account.component';
 import { CreateExamComponent } from './Pages/create-exam/create-exam.component';
 import { ExamsComponent } from './Pages/exams/exams.component';
 import { ExamComponent } from './Pages/exam/exam.component';
-import { StudentsResultsComponent } from './Pages/students-results/students-results.component';
+import { StudentResultsComponent } from './Pages/students-results/students-results.component';
 import { UpdateExamComponent } from './Pages/update-exam/update-exam.component';
 
 export const routes: Routes = [
@@ -52,6 +51,6 @@ export const routes: Routes = [
   },
   {
     path: 'students-results',
-    component: StudentsResultsComponent,
+    component: StudentResultsComponent,
   },
 ];

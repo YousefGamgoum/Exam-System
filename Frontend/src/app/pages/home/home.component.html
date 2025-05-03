@@ -1,8 +1,12 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
+<div class="mt-5 home">
+  <div class="row d-flex align-items-center justify-content-center h-100">
+    <!-- ------------------ -->
+    <div
+      class="col-md-6 col-lg-5"
+      data-aos="fade-right"
+      data-aos-duration="1000"
+    >
       <h1 class="text-center mb-4">Welcome to the Exam System</h1>
-
       @if (loggedIn) {
       <p class="text-center">
         You are logged in! Check out the available exams or view your results.
@@ -26,6 +30,18 @@
         >
       </div>
       }
+    </div>
+    <!-- ----------------- -->
+    <div
+      class="col-md-6 col-lg-7 mb-4"
+      data-aos="fade-left"
+      data-aos-duration="1000"
+    >
+      <img
+        src="imgs/bg study.jpg"
+        alt="Exam System Logo"
+        class="img-fluid w-100 h-100"
+      />
     </div>
   </div>
 </div>
