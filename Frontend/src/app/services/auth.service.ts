@@ -25,7 +25,6 @@ export class AuthService {
           localStorage.setItem('role', response.role);
           this.loggedInStatus.next(true);
           this.userRole.next(response.role);
-          console.log('Role saved in AuthService:', response.role);
         }
       })
     );
@@ -36,7 +35,6 @@ export class AuthService {
     localStorage.removeItem('role');
     this.loggedInStatus.next(false);
     this.userRole.next(null);
-    console.log('Logged out, role cleared');
   }
 
   getLoggedInStatus(): Observable<boolean> {

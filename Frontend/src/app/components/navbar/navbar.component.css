@@ -1,0 +1,113 @@
+.navbar {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+    padding: 0.5rem 0;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    transition: all 0.3s ease;
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-brand:hover {
+    color: #ffffff;
+    transform: translateY(-1px);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-nav {
+    gap: 0.3rem;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-link {
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    position: relative;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.nav-link:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.nav-link.active {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-toggler {
+    border: none;
+    padding: 0.3rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        padding: 0.8rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        margin-top: 0.5rem;
+    }
+
+    .nav-link {
+        padding: 0.4rem 0.8rem;
+    }
+}
+
+/* Animation for dropdown */
+.navbar-collapse {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Custom scrollbar for mobile menu */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        max-height: 80vh;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #ffffff rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar-collapse::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .navbar-collapse::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar-collapse::-webkit-scrollbar-thumb {
+        background-color: #ffffff;
+        border-radius: 2px;
+    }
+}

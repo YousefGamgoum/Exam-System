@@ -12,7 +12,7 @@ const {
   updateExamById,
   deleteExamById,
   enableExam,
-} = require("../Controllers/examController");
+} = require("../controllers/examController");
 const { auth, restrictTo } = require("../Middlewares/auth");
 
 router.get("/", auth, getAllExams);
