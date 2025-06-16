@@ -1,0 +1,353 @@
+<!-- <div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <h2 class="mb-4 text-center">Sign Up</h2>
+      <form #registerForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="mb-3">
+          <label for="yourName" class="form-label">Username</label>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              id="yourName"
+              [(ngModel)]="userData.username"
+              name="username"
+              placeholder="Enter User Name"
+              required
+              minlength="3"
+              #username="ngModel"
+              [ngClass]="{
+                'is-invalid':
+                  (username.invalid && (username.dirty || username.touched)) ||
+                  fieldErrors['username']
+              }"
+            />
+            @if (fieldErrors['username']) {
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="resetField('username')"
+              title="Clear field"
+            >
+              <i class="bi bi-x"></i>
+            </button>
+            }
+          </div>
+          @if (username.invalid && (username.dirty || username.touched)) {
+          <div class="invalid-feedback">
+            @if (username.errors && username.errors['required']) {
+            <span>Username is required.</span>
+            } @if (username.errors && username.errors['minlength']) {
+            <span>Username must be at least 3 characters.</span>
+            }
+          </div>
+          } @if (fieldErrors['username']) {
+          <div class="text-danger mt-1 small">
+            {{ fieldErrors["username"] }}
+          </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label for="yourEmail" class="form-label">Email</label>
+          <div class="input-group">
+            <input
+              type="email"
+              class="form-control"
+              id="yourEmail"
+              [(ngModel)]="userData.email"
+              name="email"
+              placeholder="Enter Your Email"
+              required
+              pattern="^[a-zA-Z0-9._-]{3,15}(@)(gmail|yahoo)(.com)$"
+              #email="ngModel"
+              [ngClass]="{
+                'is-invalid':
+                  (email.invalid && (email.dirty || email.touched)) ||
+                  fieldErrors['email']
+              }"
+            />
+            @if (fieldErrors['email']) {
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="resetField('email')"
+              title="Clear field"
+            >
+              <i class="bi bi-x"></i>
+            </button>
+            }
+          </div>
+          @if (email.invalid && (email.dirty || email.touched)) {
+          <div class="invalid-feedback">
+            @if (email.errors && email.errors['required']) {
+            <span>Email is required.</span>
+            } @if (email.errors && email.errors['pattern']) {
+            <span>Enter a valid Gmail or Yahoo email.</span>
+            }
+          </div>
+          } @if (fieldErrors['email']) {
+          <div class="text-danger mt-1 small">
+            {{ fieldErrors["email"] }}
+          </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label for="yourPassword" class="form-label">Password</label>
+          <div class="input-group">
+            <input
+              type="password"
+              class="form-control"
+              id="yourPassword"
+              [(ngModel)]="userData.password"
+              name="password"
+              placeholder="Enter Your Password"
+              required
+              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-_/@#$%^&*!])[a-zA-Z\d-_/@#$%^&*!]{8,20}$"
+              #password="ngModel"
+              [ngClass]="{
+                'is-invalid':
+                  (password.invalid && (password.dirty || password.touched)) ||
+                  fieldErrors['password']
+              }"
+            />
+            @if (fieldErrors['password']) {
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="resetField('password')"
+              title="Clear field"
+            >
+              <i class="bi bi-x"></i>
+            </button>
+            }
+          </div>
+          @if (password.invalid && (password.dirty || password.touched)) {
+          <div class="invalid-feedback">
+            @if (password.errors && password.errors['required']) {
+            <span>Password is required.</span>
+            } @if (password.errors && password.errors['pattern']) {
+            <span>
+              Password must be 8-20 characters and contain lowercase, uppercase,
+              numbers, and special characters
+            </span>
+            }
+          </div>
+          } @if (fieldErrors['password']) {
+          <div class="text-danger mt-1 small">
+            {{ fieldErrors["password"] }}
+          </div>
+          }
+        </div>
+
+        @if (successMessage) {
+        <div class="alert alert-success">
+          {{ successMessage }}
+        </div>
+        } @if (errorMessage) {
+        <div class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+        }
+
+        <p class="mt-3 text-muted">
+          Already have an account?
+          <a [routerLink]="['/account/login']">Login</a>
+        </p>
+        <button
+          type="submit"
+          class="btn btn-dark mt-3 w-100"
+          [disabled]="
+            registerForm.invalid || !registerForm.dirty || isSubmitting
+          "
+        >
+          <span
+            *ngIf="isSubmitting"
+            class="spinner-border spinner-border-sm me-2"
+            role="status"
+            aria-hidden="true"
+          ></span>
+          {{ isSubmitting ? "Signing Up..." : "Sign Up" }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div> -->
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <h2 class="mb-4 text-center">Sign Up</h2>
+      <form #registerForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="mb-3">
+          <label for="yourName" class="form-label">Username</label>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              id="yourName"
+              [(ngModel)]="userData.username"
+              name="username"
+              placeholder="Enter User Name"
+              required
+              minlength="3"
+              #username="ngModel"
+              [ngClass]="{
+                'is-invalid':
+                  (username.invalid && (username.dirty || username.touched)) ||
+                  fieldErrors['username']
+              }"
+            />
+            @if (fieldErrors['username']) {
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="resetField('username')"
+              title="Clear field"
+            >
+              <i class="bi bi-x"></i>
+            </button>
+            }
+          </div>
+          @if (username.invalid && (username.dirty || username.touched)) {
+          <div class="invalid-feedback">
+            @if (username.errors && username.errors['required']) {
+            <span>Username is required.</span>
+            } @if (username.errors && username.errors['minlength']) {
+            <span>Username must be at least 3 characters.</span>
+            }
+          </div>
+          } @if (fieldErrors['username']) {
+          <div class="text-danger mt-1 small">
+            {{ fieldErrors["username"] }}
+          </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label for="yourEmail" class="form-label">Email</label>
+          <div class="input-group">
+            <input
+              type="email"
+              class="form-control"
+              id="yourEmail"
+              [(ngModel)]="userData.email"
+              name="email"
+              placeholder="Enter Your Email"
+              required
+              pattern="^[a-zA-Z0-9._-]{3,15}(@)(gmail|yahoo)(.com)$"
+              #email="ngModel"
+              [ngClass]="{
+                'is-invalid':
+                  (email.invalid && (email.dirty || email.touched)) ||
+                  fieldErrors['email']
+              }"
+            />
+            @if (fieldErrors['email']) {
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="resetField('email')"
+              title="Clear field"
+            >
+              <i class="bi bi-x"></i>
+            </button>
+            }
+          </div>
+          @if (email.invalid && (email.dirty || email.touched)) {
+          <div class="invalid-feedback">
+            @if (email.errors && email.errors['required']) {
+            <span>Email is required.</span>
+            } @if (email.errors && email.errors['pattern']) {
+            <span>Enter a valid Gmail or Yahoo email.</span>
+            }
+          </div>
+          } @if (fieldErrors['email']) {
+          <div class="text-danger mt-1 small">
+            {{ fieldErrors["email"] }}
+          </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label for="yourPassword" class="form-label">Password</label>
+          <div class="input-group">
+            <input
+              type="password"
+              class="form-control"
+              id="yourPassword"
+              [(ngModel)]="userData.password"
+              name="password"
+              placeholder="Enter Your Password"
+              required
+              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-_/@#$%^&*!])[a-zA-Z\d-_/@#$%^&*!]{8,20}$"
+              #password="ngModel"
+              [ngClass]="{
+                'is-invalid':
+                  (password.invalid && (password.dirty || password.touched)) ||
+                  fieldErrors['password']
+              }"
+            />
+            @if (fieldErrors['password']) {
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="resetField('password')"
+              title="Clear field"
+            >
+              <i class="bi bi-x"></i>
+            </button>
+            }
+          </div>
+          @if (password.invalid && (password.dirty || password.touched)) {
+          <div class="invalid-feedback">
+            @if (password.errors && password.errors['required']) {
+            <span>Password is required.</span>
+            } @if (password.errors && password.errors['pattern']) {
+            <span>
+              Password must be 8-20 characters and contain lowercase, uppercase,
+              numbers, and special characters
+            </span>
+            }
+          </div>
+          } @if (fieldErrors['password']) {
+          <div class="text-danger mt-1 small">
+            {{ fieldErrors["password"] }}
+          </div>
+          }
+        </div>
+
+        @if (successMessage) {
+        <div class="alert alert-success">
+          {{ successMessage }}
+        </div>
+        } @if (errorMessage) {
+        <div class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+        }
+
+        <p class="mt-3 text-muted">
+          Already have an account?
+          <a [routerLink]="['/account/login']">Login</a>
+        </p>
+        <button
+          type="submit"
+          class="btn btn-dark mt-3 w-100"
+          [disabled]="
+            registerForm.invalid || !registerForm.dirty || isSubmitting
+          "
+        >
+          <span
+            *ngIf="isSubmitting"
+            class="spinner-border spinner-border-sm me-2"
+            role="status"
+            aria-hidden="true"
+          ></span>
+          {{ isSubmitting ? "Signing Up..." : "Sign Up" }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

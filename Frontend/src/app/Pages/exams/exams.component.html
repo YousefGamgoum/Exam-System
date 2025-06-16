@@ -1,0 +1,40 @@
+<div class="exams-container">
+    <div *ngIf="loading" class="loading">
+        Loading exams...
+    </div>
+
+    <div *ngIf="error" class="error">
+        {{ error }}
+    </div>
+
+    <div *ngIf="!loading && !error" class="exam-cards">
+        <div *ngFor="let exam of exams" class="exam-card" [routerLink]="['/exam', exam._id]">
+            <div class="card-header text-center"
+                [ngClass]="{'available': exam.available, 'unavailable': !exam.available}">
+                <h3>{{ exam.name }}</h3>
+            </div>
+            <div class="card-body">
+                <div class="info-row">
+                    <span class="label">Total Marks:</span>
+                    <span class="value">{{ exam.totalMarks }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Questions:</span>
+                    <span class="value">{{ exam.questionCount }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Submissions:</span>
+                    <span class="value">{{ exam.submissionCount }}</span>
+                </div>
+                <div class="card-actions">
+                    <button class="update-btn" (click)="navigateToUpdate(exam._id, $event)">Update</button>
+
+                    <button class="enable-btn" (click)="EnableExam(exam._id, $event)"
+                        *ngIf="!exam.available">Enable</button>
+                    <button class="delete-btn" (click)="deleteExam(exam._id, $event)"
+                        *ngIf="exam.available">Disable</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

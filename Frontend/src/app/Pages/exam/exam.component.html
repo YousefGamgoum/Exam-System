@@ -1,0 +1,78 @@
+<div class="exam-container">
+    <div *ngIf="loading" class="loading">
+        Loading exam details...
+    </div>
+
+    <div *ngIf="error" class="error">
+        {{ error }}
+    </div>
+
+    <div *ngIf="!loading && !error && exam" class="exam-content">
+        <!-- Exam Header Section -->
+        <div class="exam-header" [ngClass]="{'available': exam.available, 'unavailable': !exam.available}">
+            <div class="header-content">
+                <h1 class="exam-title">{{ exam.name }}</h1>
+                <div class="exam-actions">
+                    <button class="update-btn" (click)="navigateToUpdate(exam._id)">Update Exam</button>
+
+                    <button class="enable-btn" (click)="EnableExam(exam._id, $event)"
+                        *ngIf="!exam.available">Enable</button>
+                    <button class="delete-btn" (click)="deleteExam(exam._id, $event)"
+                        *ngIf="exam.available">Disable</button>
+                </div>
+            </div>
+            <div class="exam-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Total Marks</span>
+                    <span class="stat-value">{{ exam.totalMarks }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Questions</span>
+                    <span class="stat-value">{{ exam.questionCount }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Students</span>
+                    <span class="stat-value">{{ results.length }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exam Description -->
+        <div class="exam-description">
+            <h2>Description</h2>
+            <p class="">{{ exam.description }}</p>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section">
+            <h2>Student Results</h2>
+            <div *ngIf="results.length === 0" class="no-results">
+                <p class="lead fw-bold">No students have taken this exam yet.</p>
+            </div>
+            <div *ngIf="results.length > 0" class="results-list">
+                <div class="results-table-container">
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Email</th>
+                                <th>Score</th>
+                                <th>Percentage</th>
+                                <th>Taken At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let result of results">
+                                <td>{{ result.user[0].username }}</td>
+                                <td>{{ result.user[0].email }}</td>
+                                <td>{{ result.score }}/{{ exam.totalMarks }}</td>
+                                <td>{{ (result.score / exam.totalMarks * 100).toFixed(1) }}%</td>
+                                <td>{{ result.createdAt }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

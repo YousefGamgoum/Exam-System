@@ -1,0 +1,531 @@
+.exam-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100vh;
+    /* background-color: #f8f9fa; */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.loading,
+.error {
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.4rem;
+    color: #666;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error {
+    color: #dc3545;
+}
+
+.exam-content {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    /* flex: 1; */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Exam Header Styles */
+.exam-header {
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.exam-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+.exam-header.available::before {
+    background: linear-gradient(135deg, #2e7d32 0%, #43a047 50%, #66bb6a 100%);
+}
+
+.exam-header.unavailable::before {
+    background: linear-gradient(135deg, #c62828 0%, #d32f2f 50%, #e53935 100%);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.exam-actions {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.enable-btn,
+.update-btn,
+.delete-btn {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+.update-btn {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+}
+
+.update-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(46, 204, 113, 0.2);
+}
+
+.delete-btn {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+}
+
+.delete-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(231, 76, 60, 0.2);
+}
+
+.enable-btn {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+}
+
+.enable-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(52, 152, 219, 0.2);
+}
+
+/* Add ripple effect */
+.enable-btn::after,
+.update-btn::after,
+.delete-btn::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10, 10);
+    opacity: 0;
+    transition: transform 0.5s, opacity 1s;
+}
+
+.update-btn:active::after,
+.delete-btn:active::after,
+.enable-btn:active::after {
+    transform: scale(0, 0);
+    opacity: 0.3;
+    transition: 0s;
+}
+
+.exam-title {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    line-height: 1.2;
+    color: #ffffff;
+    position: relative;
+    z-index: 1;
+}
+
+.exam-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.stat-item {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
+    min-width: 150px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-item:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Exam Description Styles */
+.exam-description {
+    padding: 3rem;
+    border-bottom: 1px solid #eee;
+    background: white;
+    /* flex: 1; */
+}
+
+.exam-description h2 {
+    color: #333;
+    margin: 0 0 2rem 0;
+    font-size: 2rem;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.exam-description h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    border-radius: 2px;
+}
+
+.exam-description p {
+    color: #000000;
+    line-height: 1.8;
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+    max-width: 1200px;
+}
+
+/* Results Section Styles */
+.results-section {
+    padding: 2rem;
+    background: white;
+}
+
+.results-section h2 {
+    color: #1a1a2e;
+    margin: 0 0 1.5rem 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.results-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 2px;
+}
+
+.results-table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 0;
+}
+
+.results-table th,
+.results-table td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.results-table th {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.results-table tr {
+    transition: all 0.3s ease;
+}
+
+.results-table tr:hover {
+    background-color: #f8fafc;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.results-table td {
+    color: #4b5563;
+    font-size: 1rem;
+    vertical-align: middle;
+}
+
+.results-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Score and Percentage columns styling */
+.results-table td:nth-child(3),
+.results-table td:nth-child(4) {
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+/* Date column styling */
+.results-table td:nth-child(5) {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+/* Custom scrollbar */
+.results-table-container::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.results-table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.results-table-container::-webkit-scrollbar-thumb {
+    background: #1a1a2e;
+    border-radius: 3px;
+}
+
+.results-table-container::-webkit-scrollbar-thumb:hover {
+    background: #16213e;
+}
+
+/* Responsive adjustments for table */
+@media (max-width: 768px) {
+    .results-section {
+        padding: 1.5rem;
+    }
+
+    .results-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .results-table th,
+    .results-table td {
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .results-table th {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .results-section {
+        padding: 1rem;
+    }
+
+    .results-table th,
+    .results-table td {
+        padding: 0.7rem 0.8rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Responsive Styles */
+@media (max-width: 1400px) {
+    .exam-container {
+        padding: 1.5rem;
+    }
+
+    .exam-title {
+        font-size: 3rem;
+    }
+
+    .stat-item {
+        padding: 1.5rem 2rem;
+    }
+}
+
+@media (max-width: 1200px) {
+    .exam-container {
+        padding: 1rem;
+    }
+
+    .exam-title {
+        font-size: 2.5rem;
+    }
+
+    .stat-item {
+        padding: 1.2rem 1.8rem;
+        min-width: 180px;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .exam-container {
+        padding: 1rem;
+    }
+
+    .exam-header {
+        padding: 1rem;
+    }
+
+    .exam-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .exam-stats {
+        gap: 1rem;
+    }
+
+    .stat-item {
+        padding: 0.8rem 1.5rem;
+        min-width: 120px;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .exam-description,
+    .results-section {
+        padding: 2rem;
+    }
+
+    .results-table-container {
+        margin: 0 -1rem;
+        border-radius: 0;
+    }
+
+    .exam-actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .enable-btn,
+    .update-btn,
+    .delete-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+        min-width: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .exam-container {
+        padding: 0.8rem;
+    }
+
+    .exam-title {
+        font-size: 1.8rem;
+    }
+
+    .exam-stats {
+        gap: 1rem;
+    }
+
+    .stat-item {
+        padding: 1rem;
+        min-width: 120px;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+    }
+
+    .exam-description h2,
+    .results-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .results-table th,
+    .results-table td {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .exam-actions {
+        width: 100%;
+    }
+
+    .update-btn,
+    .delete-btn,
+    .enable-btn {
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+    }
+}

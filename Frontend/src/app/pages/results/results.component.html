@@ -1,0 +1,77 @@
+<!-- <div class="container mt-4">
+  <h2 class="mb-3">Your Results</h2>
+  @if (errorMessage) {
+  <div class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
+  } @if (results.length === 0 && !errorMessage) {
+  <div class="alert alert-info" role="alert">
+    You haven't taken any exams yet
+  </div>
+  } @if (results.length > 0) {
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Exam Name</th>
+          <th>Description</th>
+          <th>Your Score</th>
+          <th>Total Marks</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (result of results; track result._id) {
+        <tr>
+          <td>{{ result.exam.name }}</td>
+          <td>{{ result.exam.description }}</td>
+          <td>{{ result.score }}</td>
+          <td>{{ result.exam.totalMarks }}</td>
+          <td>{{ result.createdAt | date : "short" }}</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  }
+</div> -->
+
+<div class="container mt-4">
+  <h2 class="mb-3">Your Results</h2>
+  @if (errorMessage) {
+  <div class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
+  } @if (results.length === 0 && !errorMessage) {
+  <div class="alert alert-info" role="alert">
+    You haven't taken any exams yet
+  </div>
+  } @if (results.length > 0) {
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>User Name</th>
+          <th>Exam Name</th>
+          <th>Description</th>
+          <th>Your Score</th>
+          <th>Total Marks</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (result of results; track result._id) {
+        <tr>
+          <td>{{ result.userName }}</td>
+          <td>{{ result.exam.name }}</td>
+          <td>{{ result.exam.description }}</td>
+          <td>{{ result.score }}</td>
+          <td>{{ result.exam.totalMarks }}</td>
+          <td>{{ result.createdAt | date : "short" }}</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  }
+</div>

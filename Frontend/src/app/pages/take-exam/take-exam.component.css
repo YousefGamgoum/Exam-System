@@ -1,0 +1,13 @@
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-check-input {
+  cursor: pointer;
+}
+
+.form-check-label {
+  cursor: pointer;
+}

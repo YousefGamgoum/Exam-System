@@ -1,0 +1,133 @@
+<div class="admin-results-container" dir="ltr">
+  <div *ngIf="loading" class="loading-section">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Loading student results...</p>
+  </div>
+
+  <div *ngIf="error" class="error-section alert alert-danger">
+    <i class="fas fa-exclamation-circle"></i> {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error">
+    <div class="admin-header mb-4">
+      <h2 class="admin-title">Student Results</h2>
+      <div class="admin-actions">
+        <div class="search-section">
+          <input type="text" [(ngModel)]="searchTerm" (keyup)="applyFilters()"
+            placeholder="Search by student or exam name..." class="form-control search-input" />
+        </div>
+        <div class="filter-section">
+          <select [(ngModel)]="examFilter" (change)="applyFilters()" class="form-select">
+            <option value="">All Exams</option>
+            <option *ngFor="let exam of uniqueExams" [value]="exam">
+              {{ exam }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="filteredResults.length === 0" class="no-results">
+      <p>
+        No results available{{ examFilter ? " for the selected exam" : "" }}.
+      </p>
+    </div>
+
+    <div *ngIf="filteredResults.length > 0" class="table-responsive">
+      <table class="table table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Student Name</th>
+            <th scope="col">Exam Name</th>
+            <th scope="col">Score</th>
+            <th scope="col">Percentage</th>
+            <th scope="col">Questions</th>
+            <th scope="col">Submission Date</th>
+            <!-- <th scope="col">Actions</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let result of filteredResults; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ result.user.username || "Unknown" }}</td>
+            <td>{{ result.exam.name }}</td>
+            <td>{{ result.score }}/{{ result.exam.totalMarks }}</td>
+            <td>{{ calculatePercentage(result.score, result.exam.totalMarks) }}%</td>
+            <td>{{ result.exam.questionCount || "N/A" }}</td>
+            <td>{{ formatDate(result.createdAt) }}</td>
+            <!-- <td>
+              <button class="btn btn-sm btn-info me-1" (click)="viewDetails(result)">
+                <i class="fas fa-eye"></i> Details
+              </button>
+            </td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <!-- Result Details Modal -->
+    <div class="modal fade" id="resultDetailsModal" tabindex="-1" aria-labelledby="resultDetailsModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="resultDetailsModalLabel">
+              Student Result Details
+            </h5>
+            <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" *ngIf="selectedResult">
+            <div class="result-details">
+              <div class="detail-row">
+                <span class="detail-label">Student Name:</span>
+                <span class="detail-value">{{ selectedResult.user.username }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Exam Name:</span>
+                <span class="detail-value">{{ selectedResult.exam.name }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Score:</span>
+                <span class="detail-value">{{ selectedResult.score }}/{{
+                  selectedResult.exam.totalMarks
+                  }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Percentage:</span>
+                <span class="detail-value">
+                  {{
+                  calculatePercentage(
+                  selectedResult.score,
+                  selectedResult.exam.totalMarks
+                  )
+                  }}%
+                </span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Number of Questions:</span>
+                <span class="detail-value">{{
+                  selectedResult.exam.questionCount
+                  }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Submission Date:</span>
+                <span class="detail-value">{{
+                  formatDate(selectedResult.createdAt)
+                  }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,70 @@
+<div class="update-exam-container">
+    <div *ngIf="loading" class="loading">
+        Loading exam data...
+    </div>
+
+    <div *ngIf="error" class="error">
+        {{ error }}
+    </div>
+
+    <form *ngIf="!loading && !error" [formGroup]="examForm" (ngSubmit)="onSubmit()" class="exam-form">
+        <div class="form-header">
+            <h1>Update Exam</h1>
+        </div>
+
+        <div class="form-section">
+            <div class="form-group">
+                <label for="examTitle">Exam Title</label>
+                <input type="text" id="examTitle" formControlName="examTitle"
+                    [class.invalid]="examForm.get('examTitle')?.invalid && examForm.get('examTitle')?.touched">
+                <div class="error-message"
+                    *ngIf="examForm.get('examTitle')?.invalid && examForm.get('examTitle')?.touched">
+                    <span *ngIf="examForm.get('examTitle')?.errors?.['required']">Title is required</span>
+                    <span *ngIf="examForm.get('examTitle')?.errors?.['minlength']">Title must be at least 3
+                        characters</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="examDescription">Exam Description</label>
+                <textarea id="examDescription" formControlName="examDescription" rows="4"
+                    [class.invalid]="examForm.get('examDescription')?.invalid && examForm.get('examDescription')?.touched"></textarea>
+                <div class="error-message"
+                    *ngIf="examForm.get('examDescription')?.invalid && examForm.get('examDescription')?.touched">
+                    <span *ngIf="examForm.get('examDescription')?.errors?.['required']">Description is required</span>
+                    <span *ngIf="examForm.get('examDescription')?.errors?.['minlength']">Description must be at least 10
+                        characters</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="questions-section">
+            <div class="section-header">
+                <h2>Questions</h2>
+            </div>
+
+            <div *ngFor="let question of questions; let i = index">
+                <div class="question-container">
+                    <div class="question-header">
+                        <h3>Question {{ i + 1 }}</h3>
+                        <button type="button" class="delete-question-btn" (click)="deleteQuestion(i)"
+                            *ngIf="questions.length > 1">
+                            Delete
+                        </button>
+                    </div>
+                    <app-question [questionData]="examQuestions[i]" [questionIndex]="i"
+                        (questionAdded)="onQuestionAdded($event.data, $event.index)"></app-question>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="add-question-btn" (click)="addQuestion()">
+                Add Question
+            </button>
+            <button type="submit" [disabled]="examForm.invalid || examQuestions.length === 0" class="submit-btn">
+                Update Exam
+            </button>
+        </div>
+    </form>
+</div>

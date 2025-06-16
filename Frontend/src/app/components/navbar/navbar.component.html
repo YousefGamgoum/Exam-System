@@ -1,0 +1,115 @@
+<!-- <nav class="navbar navbar-expand-lg" style="background-color: #e3f2fd">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/">Exam System</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/']">Home</a>
+        </li>
+        @if (loggedIn) {
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/exam-list']">Available Exams</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/results']">View Results</a>
+        </li>
+        } @if (!loggedIn) {
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/account/login']">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/account/register']">Register</a>
+        </li>
+        } @if (loggedIn) {
+        <li class="nav-item">
+          <a class="nav-link" (click)="logout()" style="cursor: pointer"
+            >Logout</a
+          >
+        </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav> -->
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <span class="navbar-brand">
+      <i class="fas fa-graduation-cap me-2"></i>Exam System
+    </span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        @if (loggedIn) {
+        @if (userRole === 'student') {
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/home']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <i class="fas fa-home me-1"></i>Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/exam-list']" routerLinkActive="active">
+            <i class="fas fa-list-alt me-1"></i>Available Exams
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/results']" routerLinkActive="active">
+            <i class="fas fa-chart-bar me-1"></i>View Results
+          </a>
+        </li>
+        }
+        @if (userRole === 'admin') {
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/exams']" routerLinkActive="active">
+            <i class="fas fa-file-alt me-1"></i>Exams
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/students-results']" routerLinkActive="active">
+            <i class="fas fa-users me-1"></i>Students Results
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/create-exam']" routerLinkActive="active">
+            <i class="fas fa-plus-circle me-1"></i>Create Exam
+          </a>
+        </li>
+        }
+        }
+        @if (!loggedIn) {
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/account/login']" routerLinkActive="active">
+            <i class="fas fa-sign-in-alt me-1"></i>Login
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/account/register']" routerLinkActive="active">
+            <i class="fas fa-user-plus me-1"></i>Register
+          </a>
+        </li>
+        }
+        @if (loggedIn) {
+        <li class="nav-item">
+          <a class="nav-link" (click)="logout()" style="cursor: pointer">
+            <i class="fas fa-sign-out-alt me-1"></i>Logout
+          </a>
+        </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>

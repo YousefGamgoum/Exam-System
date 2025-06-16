@@ -1,0 +1,89 @@
+<!-- <h2 class="mb-4 text-center">Login</h2>
+<form (ngSubmit)="onSubmit()">
+  <div class="mb-3">
+    <label for="yourEmail" class="form-label mx-2 fs-5">Email</label>
+    <input
+      type="email"
+      class="form-control"
+      id="yourEmail"
+      [(ngModel)]="credentials.email"
+      name="email"
+      placeholder="Enter Your Email"
+      required
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="yourPassword" class="form-label mx-2 fs-5">Password</label>
+    <input
+      type="password"
+      class="form-control"
+      id="yourPassword"
+      [(ngModel)]="credentials.password"
+      name="password"
+      placeholder="Enter Your Password"
+      required
+    />
+  </div>
+
+  @if (successMessage) {
+  <div class="alert alert-success" role="alert">
+    {{ successMessage }}
+  </div>
+  } @if (errorMessage) {
+  <div class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
+  }
+
+  <p class="mt-3 fs-6 text-muted">
+    Don't have an account?
+    <a [routerLink]="['/account/register']">Sign Up</a>
+  </p>
+  <button type="submit" class="btn btn-dark mt-3 w-100">Login</button>
+</form> -->
+
+<h2 class="mb-4 text-center">Login</h2>
+<form (ngSubmit)="onSubmit()">
+  <div class="mb-3">
+    <label for="yourEmail" class="form-label mx-2 fs-5">Email</label>
+    <input
+      type="email"
+      class="form-control"
+      id="yourEmail"
+      [(ngModel)]="credentials.email"
+      name="email"
+      placeholder="Enter Your Email"
+      required
+    />
+  </div>
+
+  <div class="mb-3">
+    <label for="yourPassword" class="form-label mx-2 fs-5">Password</label>
+    <input
+      type="password"
+      class="form-control"
+      id="yourPassword"
+      [(ngModel)]="credentials.password"
+      name="password"
+      placeholder="Enter Your Password"
+      required
+    />
+  </div>
+
+  @if (successMessage) {
+  <div class="alert alert-success" role="alert">
+    {{ successMessage }}
+  </div>
+  } @if (errorMessage) {
+  <div class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
+  }
+
+  <p class="mt-3 fs-6 text-muted">
+    Don't have an account?
+    <a [routerLink]="['/account/register']">Sign Up</a>
+  </p>
+  <button type="submit" class="btn btn-dark mt-3 w-100">Login</button>
+</form>
