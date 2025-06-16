@@ -57,7 +57,10 @@ export class QuestionComponent implements OnInit, OnChanges {
           ].every(
             (option) => formValue[option] && formValue[option].trim() !== ''
           );
-          if (hasAllOptions && formValue.correctAnswer !== '') {
+          if (
+            hasAllOptions &&
+            (formValue.correctAnswer === 0 || formValue.correctAnswer)
+          ) {
             this.questionAdded.emit({
               data: formValue,
               index: this.questionIndex,
@@ -78,7 +81,12 @@ export class QuestionComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['questionData'] && changes['questionData'].currentValue) {
-      this.questionForm.patchValue(this.questionData);
+      const data = changes['questionData'].currentValue;
+      // Convert correctAnswer to number for MCQ questions
+      if (data.questionType === 'mcq' && data.correctAnswer !== undefined) {
+        data.correctAnswer = Number(data.correctAnswer);
+      }
+      this.questionForm.patchValue(data);
     }
   }
 

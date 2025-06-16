@@ -73,7 +73,7 @@ export class CreateExamComponent implements OnInit {
       !question.title ||
       !question.mark ||
       !question.questionType ||
-      !question.correctAnswer
+      (question.correctAnswer !== 0 && !question.correctAnswer)
     ) {
       console.error('Missing required fields:', question);
       return null;
@@ -139,7 +139,12 @@ export class CreateExamComponent implements OnInit {
     if (this.examForm.valid && this.examQuestions.length > 0) {
       // Filter out any undefined or null questions
       const validQuestions = this.examQuestions.filter(
-        (q) => q && q.title && q.questionType && q.mark && q.correctAnswer
+        (q) =>
+          q &&
+          q.title &&
+          q.questionType &&
+          q.mark &&
+          (q.correctAnswer === 0 || q.correctAnswer)
       );
 
       if (validQuestions.length === 0) {
